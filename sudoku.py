@@ -32,13 +32,21 @@ def input_sudoku_board():
     return game_board
 
 def eliminate_duplicates(board):
-    for col in range(9):
-        column_values = [board[row][col] for row in range(9)]
-        for value in set(column_values):
-            if value != 0 and column_values.count(value) > 1:
-                for row in range(9):
-                    if board[row][col] == value:
-                        board[row][col] = 0
+    for i in range(9):
+        for j in range(9):
+            if board[i][j] != 0:
+                for k in range(9):
+                    if k != j and board[i][k] == board[i][j]:
+                        board[i][k] = 0
+                for k in range(9):
+                    if k != i and board[k][j] == board[i][j]:
+                        board[k][j] = 0
+                box_start_row, box_start_col = (i // 3) * 3, (j // 3) * 3
+                for row in range(box_start_row, box_start_row + 3):
+                    for col in range(box_start_col, box_start_col + 3):
+                        if row != i and col != j and board[row][col] == board[i][j]:
+                            board[row][col] = 0
+
 
 game_board = input_sudoku_board()
 eliminate_duplicates(game_board)
